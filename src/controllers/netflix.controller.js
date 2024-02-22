@@ -31,7 +31,6 @@ exports.listeNetflix = (req, res) => {
                 });
                 return;
             }
-            console.log(Object.keys(netflix).length);
             if (Object.keys(netflix).length > req.query.page*10){
                 let page =  parseInt(req.query.page)+1;
                 if(req.query.page != null){
