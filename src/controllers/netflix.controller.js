@@ -15,7 +15,7 @@ exports.listeNetflix = (req, res) => {
         });
         return;
     }
-    if(req.params.type_titre != "Movie" && req.params.type_titre != "TV Show"){
+    if (req.params.type_titre != "Movie" && req.params.type_titre != "TV Show") {
         res.status(400);
         res.send({
             erreur: "le type doit etre 'Movie' ou 'TV Show'"
@@ -31,35 +31,38 @@ exports.listeNetflix = (req, res) => {
                 });
                 return;
             }
-            if (Object.keys(netflix).length > req.query.page*10){
-                let page =  parseInt(req.query.page)+1;
-                if(req.query.page != null){
+            if (Object.keys(netflix).length > req.query.page * 10) {
+                let page = parseInt(req.query.page) + 1;
+                if (req.query.page != null) {
 
-                    res.send({netflix : netflix.slice(req.query.page*10 -10,req.query.page*10), url_page_suivante : "/api/netflix/titres/Movie?page="+ page  });
+                    // ligne trop longue + oublie du lien pour TV_Show
+                    res.send({ netflix: netflix.slice(req.query.page * 10 - 10, req.query.page * 10), url_page_suivante: "/api/netflix/titres/Movie?page=" + page });
                 }
-                else{
-                   res.send({netflix : netflix.slice(0,10), url_page_suivante : "/api/netflix/titres/Movie?page=2"} );
-    
+                else {
+                    // ligne trop longue
+                    res.send({ netflix: netflix.slice(0, 10), url_page_suivante: "/api/netflix/titres/Movie?page=2" });
+
                 }
             }
-            else{
-                if(req.query.page != null){
-                    res.send({netflix : netflix.slice(req.query.page*10 -10,req.query.page*10), url_page_suivante : null} );
-                    }
-                    else{
-                       res.send({netflix : netflix.slice(0,10), url_page_suivante :null} );
-        
-                    }
+            else {
+                if (req.query.page != null) {
+                    // ligne trop longue
+                    res.send({ netflix: netflix.slice(req.query.page * 10 - 10, req.query.page * 10), url_page_suivante: null });
+                }
+                else {
+                    res.send({ netflix: netflix.slice(0, 10), url_page_suivante: null });
+
+                }
             }
-            
-            
+
+
         })
         .catch((erreur) => {
             console.log('Erreur : ', erreur);
-        res.status(500)
-        res.send({
-            message: "Erreur lors de la récupération des films/shows "
-        });
+            res.status(500)
+            res.send({
+                message: "Erreur lors de la récupération des films/shows "
+            });
         });
 
 }
